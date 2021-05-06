@@ -1,0 +1,75 @@
+{% extends './basic.html' %}
+
+{% block title %}contact us{% endblock %}
+
+{% block body %}
+<div class="container my-4">
+<h3>Contact Us Regarding Any Query</h3>
+
+<form action="/shop/contact/" method="post">{% csrf_token %}
+  <div class="form-group">
+    <label for="name">Enter your name</label>
+    <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name">
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email">
+  </div>
+  <div class="form-group">
+    <label for="phone">Contact</label>
+    <input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone Number">
+  </div>
+  <div class="form-group">
+    <label for="desc">How May We Help You</label>
+    <textarea class="form-control" name="desc" id="desc" placeholder="Enter your queries here" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-success">Submit</button>
+  
+</form>
+</div>
+
+  
+{% endblock  %}
+{% block js %}
+<script>
+{% if thank %}
+alert("Thanks! for contacting with us.")
+document.location = "/shop/contact";
+{% endif %}
+
+
+// Find out the cart items from localStorage
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    updateCart(cart);
+}
+
+$('').on('click','button.cart',function(){
+    var idstr = this.id.toString();
+    if (cart[idstr] != undefined) {
+        qty = cart[idstr][0] + 1;
+        
+    } else {
+        qty = 1;
+        cart[idstr] = [qty,];
+    }
+    updateCart(cart);
+    
+});
+
+
+
+
+function updateCart(cart) {
+    var sum = 0;
+    for (var item in cart) {
+        sum = sum + cart[item][0];
+    }
+    document.getElementById('cart').innerHTML = sum;
+}
+
+</script>
+
+{% endblock %}
